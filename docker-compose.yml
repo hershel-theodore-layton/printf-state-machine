@@ -1,6 +1,6 @@
 services:
   hhvm:
-    container_name: theodore-format-codegen-container
+    container_name: theodore-printf-state-machine-container
     build:
       context: .
       dockerfile: ./Dockerfile

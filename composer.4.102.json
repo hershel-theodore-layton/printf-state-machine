@@ -1,5 +1,5 @@
 {
-  "name": "hershel-theodore-layton/format-codegen",
+  "name": "hershel-theodore-layton/printf-state-machine",
   "description": "Generate HH\\FormatString<T> state machines",
   "license": "MIT",
   "require": {
