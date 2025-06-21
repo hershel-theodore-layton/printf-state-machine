@@ -1,5 +1,5 @@
 /** printf-state-machine is MIT licensed, see /LICENSE. */
-namespace HTL\PrintfStateMachine\Tests\ReverseMany;
+namespace HTL\PrintfStateMachine\Tests\UpperMany;
 
 use type HTL\Pragma\Pragmas;
 <<file:
@@ -8,7 +8,7 @@ use type HTL\Pragma\Pragmas;
     vec['PhaLinters', 'fixme:unused_variable'],
   )>>
 
-interface ReverseMany {
+interface UpperMany {
   public function format_a(vec<string> $_)[]: string;
   public function format_0x25()[]: string;
 }
@@ -56,7 +56,7 @@ function engine(
             case 0x61: // 'a'
               $arg = $arg |> cast_generated_93ee28980c044af8f00a932f($$);
               $new_format .= '%s';
-              $new_args[] = $arg |> \HH\Lib\Vec\map($$, \HH\Lib\Str\reverse<>);
+              $new_args[] = $arg |> \HH\Lib\Vec\map($$, \HH\Lib\Str\uppercase<>);
               ++$arg_i;
               $done = true;
               break;

@@ -43,28 +43,28 @@ async function usage_async(
     'MapA2S',
   );
   await $write_async(
-    $factory('Reverse', dict[])->withRewrite<string>('a', 's', Str\reverse<>),
-    'Reverse',
+    $factory('Upper', dict[])->withRewrite<string>('a', 's', Str\uppercase<>),
+    'Upper',
   );
   await $write_async(
-    $factory('ReverseMany', dict[])->withRewriteOfVec<string>(
+    $factory('UpperMany', dict[])->withRewriteOfVec<string>(
       'a',
       's',
-      Str\reverse<>,
+      Str\uppercase<>,
     ),
-    'ReverseMany',
+    'UpperMany',
   );
   await $write_async(
     $factory('Coalesce', dict[])->withRewriteOfNullable<string>(
       '?s',
       's',
-      Str\reverse<>,
+      Str\uppercase<>,
     ),
     'Coalesce',
   );
   await $write_async(
-    $factory('AlsoReverse')->withValueHandler<string>('x', Str\reverse<>),
-    'AlsoReverse',
+    $factory('AlsoUpper')->withValueHandler<string>('x', Str\uppercase<>),
+    'AlsoUpper',
   );
   await $write_async($factory('Custom')->with(new CustomHandler()), 'Custom');
   await $write_async(
@@ -135,27 +135,27 @@ async function usage_async(
       expect($args)->toEqual(vec[123]);
     })
     ->test('transformation set, runtime type checked', ()[] ==> {
-      expect_invoked(() ==> Reverse\engine('%a', vec[123]))
+      expect_invoked(() ==> Upper\engine('%a', vec[123]))
         ->toHaveThrown<\TypeAssertionException>('Expected string, got int');
     })
     ->test('transformation is invoked on arguments', ()[] ==> {
-      list($_, $args) = format<Reverse\Reverse>(Reverse\engine<>, '%a', 'text');
-      expect($args)->toEqual(vec['txet']);
+      list($_, $args) = format<Upper\Upper>(Upper\engine<>, '%a', 'text');
+      expect($args)->toEqual(vec['TEXT']);
     })
     ->test('with value handler is just sugar for with rewrite', ()[] ==> {
       list($format, $args) =
-        format<AlsoReverse\AlsoReverse>(AlsoReverse\engine<>, 'A %x B', 'text');
+        format<AlsoUpper\AlsoUpper>(AlsoUpper\engine<>, 'A %x B', 'text');
       expect($format)->toEqual('A %x B');
-      expect($args)->toEqual(vec['txet']);
+      expect($args)->toEqual(vec['TEXT']);
     })
     ->test('vec based operations', ()[] ==> {
-      list($_, $args) = format<ReverseMany\ReverseMany>(
-        ReverseMany\engine<>,
+      list($_, $args) = format<UpperMany\UpperMany>(
+        UpperMany\engine<>,
         '%a %a',
         vec['ab', 'cd'],
         vec[],
       );
-      expect($args)->toEqual(vec[vec['ba', 'dc'], vec[]]);
+      expect($args)->toEqual(vec[vec['AB', 'CD'], vec[]]);
     })
     ->test('null based operations', ()[] ==> {
       list($_, $args) = format<Coalesce\Coalesce>(
@@ -164,7 +164,7 @@ async function usage_async(
         'nonnull',
         null,
       );
-      expect($args)->toEqual(vec['llunnon', null]);
+      expect($args)->toEqual(vec['NONNULL', null]);
     })
     ->test('custom case block', ()[] ==> {
       list($format, $args) =

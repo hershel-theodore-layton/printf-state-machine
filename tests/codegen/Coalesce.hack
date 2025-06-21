@@ -81,7 +81,7 @@ function engine(
             case 0x73: // '?s'
               $arg = $arg |> cast_generated_dcd6916a0daf20dbd3dc4622($$);
               $new_format .= '%s';
-              $new_args[] = $arg |> $$ is null ? null : \HH\Lib\Str\reverse($$);
+              $new_args[] = $arg |> $$ is null ? null : \HH\Lib\Str\uppercase($$);
               ++$arg_i;
               $done = true;
               break;

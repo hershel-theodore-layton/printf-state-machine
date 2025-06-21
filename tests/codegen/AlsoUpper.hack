@@ -1,5 +1,5 @@
 /** printf-state-machine is MIT licensed, see /LICENSE. */
-namespace HTL\PrintfStateMachine\Tests\AlsoReverse;
+namespace HTL\PrintfStateMachine\Tests\AlsoUpper;
 
 use type HTL\Pragma\Pragmas;
 <<file:
@@ -8,7 +8,7 @@ use type HTL\Pragma\Pragmas;
     vec['PhaLinters', 'fixme:unused_variable'],
   )>>
 
-interface AlsoReverse {
+interface AlsoUpper {
   public function format_x(string $_)[]: string;
   public function format_0x25()[]: string;
 }
@@ -56,7 +56,7 @@ function engine(
             case 0x78: // 'x'
               $arg = $arg |> cast_generated_79ee78ec1a12904739e2904d($$);
               $new_format .= '%x';
-              $new_args[] = $arg |> \HH\Lib\Str\reverse($$);
+              $new_args[] = $arg |> \HH\Lib\Str\uppercase($$);
               ++$arg_i;
               $done = true;
               break;
