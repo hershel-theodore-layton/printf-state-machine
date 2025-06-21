@@ -8,5 +8,5 @@ function format<T>(
   HH\FormatString<T> $format,
   mixed ...$args
 )[]: (string, vec<mixed>) {
-  return $engine($format as string, $args);
+  return $engine($format as string, vec($args));
 }
