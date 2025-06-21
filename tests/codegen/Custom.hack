@@ -55,7 +55,7 @@ function engine(
           switch ($char) {
             case 0x44: // 'D'
               invariant($old_format[$char_i + 1] === 'E', 'expected an E');
-              $new_args[] = 'transformed(' . $arg . ')';
+              $new_args[] = 'transformed(' . $arg as int . ')';
               ++$arg_i;
               ++$char_i;
               $new_format .= '%custom';
