@@ -14,7 +14,7 @@ Start with `PrintfStateMachine\Factory::create()` and chain `->with...` methods.
 Once your DSL is ready, invoke
 `|> PrintfStateMachine\codegen($$, PrintfStateMachine\ENGINE_TEMPLATE)`. You will
 get `Entities`, which are "just code". Put this code somewhere in a namespace
-it won''t conflict with any other engines. Then create a typesafe caller.
+it won't conflict with any other engines. Then create a typesafe caller.
 
 ```HACK
 function your_format_function(
@@ -49,4 +49,4 @@ a tool like this. Write a definition for 12 (excluding `%C` and `%T`) specifiers
 and add `->withRewrite<TableAndColumnName>('N', 'C')`. The format and args were
 typechecked by Hack.
 
-I library will be published with these implementations.
+A library will be published with these implementations.
