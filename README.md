@@ -41,7 +41,7 @@ out in your factory.
 | `%K`              | `/* comments */`                       |
 | `%Q`              | nested Query objects                   |
 
-You may very well want to add a strongly type `%N` for `TableAndColumnName`
+You may very well want to add a strongly typed `%N` for `TableAndColumnName`
 to make sure that you never accidentally switch around a column name and a
 user supplied value. Short of patching the Hack typechecker, or building a
 very difficult to write linter that depends on type information, you'd need
