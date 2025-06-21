@@ -3,7 +3,7 @@
 _Generate HH\\FormatString&lt;T&gt; state machines._
 
 This package uses a code generator to create state machines that process
-`HH\FormatString<T>` and the arguments and the accompanying typesafety
+`HH\FormatString<T>` with their arguments and the accompanying typesafety
 interfaces. This is a `--dev` dependency. You don't need this generator in
 production to use the state machines.
 
