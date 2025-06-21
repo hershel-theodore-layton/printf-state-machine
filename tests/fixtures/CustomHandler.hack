@@ -16,6 +16,7 @@ $new_args[] = 'transformed(' . $arg . ')';
 ++$char_i;
 $new_format .= '%custom';
 $done = true;
+break;
 HACK
       |> PrintfStateMachine\case_block($$);
   }

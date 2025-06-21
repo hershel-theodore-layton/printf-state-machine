@@ -60,6 +60,7 @@ function engine(
               ++$char_i;
               $new_format .= '%custom';
               $done = true;
+              break;
             case 0x25: // '%' -> string
               $state = 1;
               break;
