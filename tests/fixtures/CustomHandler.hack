@@ -22,7 +22,7 @@ HACK
   }
 
   public function getHandCraftedInterfaceName()[]: PrintfStateMachine\HackType {
-    return PrintfStateMachine\hack_type('\\'.RequireAnE::class);
+    return PrintfStateMachine\hack_type('\\'.(string)RequireAnE::class);
   }
 
   public function getSpecifierText()[]: string {
