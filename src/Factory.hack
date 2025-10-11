@@ -2,6 +2,7 @@
 namespace HTL\PrintfStateMachine;
 
 use namespace HH;
+use function var_export_pure;
 
 final class Factory {
 
@@ -167,7 +168,7 @@ final class Factory {
     ?string $to_sequence,
   )[]: SequenceTransform {
     return $to_sequence ?? $from_sequence
-      |> _Private\string_export_pure('%'.$$)
+      |> var_export_pure('%'.$$)
       |> sequence_transform($$);
   }
 }

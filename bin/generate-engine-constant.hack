@@ -2,8 +2,8 @@
 namespace HTL\PrintfStateMachine\_Private\Bin;
 
 use namespace HH\Lib\{File, Str};
-use namespace HTL\PrintfStateMachine\_Private;
 use type HTL\Pragma\Pragmas;
+use function var_export_pure;
 
 <<file: Pragmas(vec['PhaLinters', 'fixme:unused_variable'])>>
 
@@ -25,7 +25,7 @@ async function generate_template_constant_async()[defaults]: Awaitable<void> {
 
   echo Str\slice($contents, $halt_compiler_offset)
     |> Str\trim_right($$)
-    |> _Private\string_export_pure($$)
+    |> var_export_pure($$)
     |> Str\format(
       "/** This project is unlicensed. No license has been granted. */\n".
       "namespace HTL\PrintfStateMachine;\n\n".

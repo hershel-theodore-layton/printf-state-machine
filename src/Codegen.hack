@@ -2,6 +2,7 @@
 namespace HTL\PrintfStateMachine;
 
 use namespace HH\Lib\{C, Dict, Str, Vec};
+use function var_export_pure;
 
 final class Codegen {
   private vec<Handler> $handlers;
@@ -127,7 +128,7 @@ final class Codegen {
           "  %s\n".
           '  break;',
           $trans->getLastChar(),
-          _Private\string_export_pure($trans->getSpecifierText()),
+          var_export_pure($trans->getSpecifierText()),
           $trans->getReturnType(),
           Str\format('$state = %d;', $prefixes[$specifier_text]),
         )
@@ -136,7 +137,7 @@ final class Codegen {
         $switches[$prefixes[$prefix]][] = Str\format(
           "case 0x%x: // %s\n%s",
           $trans->getLastChar(),
-          _Private\string_export_pure($trans->getSpecifierText()),
+          var_export_pure($trans->getSpecifierText()),
           $handler->getCaseBlock() |> indent($$),
         )
           |> indent($$);
