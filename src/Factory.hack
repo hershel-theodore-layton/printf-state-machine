@@ -168,7 +168,7 @@ final class Factory {
     ?string $to_sequence,
   )[]: SequenceTransform {
     return $to_sequence ?? $from_sequence
-      |> var_export_pure('%'.$$)
+      |> var_export_pure('%'.$$) as string
       |> sequence_transform($$);
   }
 }

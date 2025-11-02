@@ -25,7 +25,7 @@ async function generate_template_constant_async()[defaults]: Awaitable<void> {
 
   echo Str\slice($contents, $halt_compiler_offset)
     |> Str\trim_right($$)
-    |> var_export_pure($$)
+    |> var_export_pure($$) as string
     |> Str\format(
       "/** This project is unlicensed. No license has been granted. */\n".
       "namespace HTL\PrintfStateMachine;\n\n".

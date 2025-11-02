@@ -56,7 +56,7 @@ final class TypeAssertionGenerator
   }
 
   private static function typeNameToFunctionName(string $type_name)[]: string {
-    return \sha1($type_name) |> Str\slice($$, 16) |> 'cast_generated_'.$$;
+    return \sha1($type_name) as string |> Str\slice($$, 16) |> 'cast_generated_'.$$;
   }
 
   private static function newFunction(
