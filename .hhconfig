@@ -5,6 +5,6 @@ hackfmt.tabs = false
 
 ; Basic configuration
 check_xhp_attribute = true
-disable_element_mangling=true
-enable_xhp_class_modifier=true
+disable_xhp_element_mangling = true
+enable_xhp_class_modifier = true
 enable_strict_string_concat_interp = true
