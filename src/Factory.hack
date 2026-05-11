@@ -27,6 +27,10 @@ final class Factory {
     return $this->typeAssertionGenerator;
   }
 
+  public function has(string $specifier_text)[]: bool {
+    return $this->group->has($specifier_text);
+  }
+
   public function with(
     Handler $handler,
     ?TypeAssertionGenerator $type_assertion_generator = null,
@@ -37,6 +41,16 @@ final class Factory {
         $this->prefix,
         $type_assertion_generator ?? $this->typeAssertionGenerator,
       );
+  }
+
+  public function without(string $specifier_text)[]: this {
+    return $this->group->without($specifier_text)
+      |> new static($$, $this->prefix, $this->typeAssertionGenerator);
+  }
+
+  public function withoutIfExists(string $specifier_text)[]: this {
+    return
+      $this->has($specifier_text) ? $this->without($specifier_text) : $this;
   }
 
   public function withRewrite<reify T>(

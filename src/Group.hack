@@ -4,19 +4,28 @@ namespace HTL\PrintfStateMachine;
 use namespace HH\Lib\{C, Str};
 
 final class Group {
-  private function __construct(private vec<Handler> $handlers)[] {}
+  private function __construct(private dict<string, Handler> $handlers)[] {}
 
   public static function create()[]: this {
-    return new static(vec[]);
+    return new static(dict[]);
   }
 
   public function getHandlers()[]: vec<Handler> {
-    return $this->handlers;
+    return vec($this->handlers);
+  }
+
+  public function has(string $specifier_text)[]: bool {
+    return C\contains_key($this->handlers, $specifier_text);
   }
 
   public function with(Handler $handler)[]: this {
     $handlers = $this->handlers;
     $new_prefix = $handler->getSpecifierText();
+
+    if (C\contains_key($handlers, $handler->getSpecifierText())) {
+      $handlers[$handler->getSpecifierText()] = $handler;
+      return new static($handlers);
+    }
 
     $collision = C\find(
       $handlers,
@@ -31,7 +40,19 @@ final class Group {
       $collision->getSpecifierText(),
     );
 
-    $handlers[] = $handler;
+    $handlers[$handler->getSpecifierText()] = $handler;
+    return new static($handlers);
+  }
+
+  public function without(string $specifier_text)[]: this {
+    invariant(
+      $this->has($specifier_text),
+      'This Group did not have a specifier %s',
+      $specifier_text,
+    );
+
+    $handlers = $this->handlers;
+    unset($handlers[$specifier_text]);
     return new static($handlers);
   }
 }

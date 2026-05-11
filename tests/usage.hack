@@ -93,6 +93,47 @@ async function usage_async(
           "Could not add '%aba' because it is ambiguous with '%ab'",
         );
     })
+    ->test('replace an existing handler', () ==> {
+      $generated = $factory('Prefix')
+        ->withRewrite<int>('X', 'd', increment<>)
+        ->withRewrite<int>('X', 'd', decrement<>)
+        |> PrintfStateMachine\codegen($$, PrintfStateMachine\ENGINE_TEMPLATE);
+
+      expect($generated)->toContainSubstring('decrement');
+      expect($generated)->toNotContainSubstring('increment');
+    })
+    ->test('query for a handler', () ==> {
+      $with_ab = $factory('Prefix')->withRewrite<int>('ab');
+      expect($with_ab->has('ab'))->toBeTrue();
+      expect($with_ab->has('a'))->toBeFalse();
+      expect($with_ab->has('abc'))->toBeFalse();
+    })
+    ->test('remove a non existent handler', () ==> {
+      expect_invoked(
+        () ==> $factory('Prefix')->withRewrite<int>('ab')->without('cd'),
+      )->toHaveThrown<InvariantException>(
+        'This Group did not have a specifier cd',
+      );
+    })
+    ->test('remove a handler', () ==> {
+      $code = $factory('Prefix')
+        ->withRewrite<int>('a')
+        ->withRewrite<int>('b')
+        ->without('a')
+        |> PrintfStateMachine\codegen($$, PrintfStateMachine\ENGINE_TEMPLATE);
+
+      expect($code)->toNotContainSubstring('format_a');
+      expect($code)->toContainSubstring('format_b');
+    })
+    ->test('remove a handler, if it exists', () ==> {
+      $code = $factory('Prefix')
+        ->withRewrite<int>('a')
+        ->withoutIfExists('a')
+        ->withoutIfExists('b')
+        |> PrintfStateMachine\codegen($$, PrintfStateMachine\ENGINE_TEMPLATE);
+
+      expect($code)->toNotContainSubstring('format_a');
+    })
     ->test('noop', ()[] ==> {
       list($format, $_) = format<Noop\Noop>(Noop\engine<>, '');
       expect($format)->toEqual('');
