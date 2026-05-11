@@ -6,4 +6,5 @@ interface Handler {
   public function getCaseBlock()[]: CaseBlock;
   public function getHandCraftedInterfaceName()[]: ?HackType;
   public function getSpecifierText()[]: string;
+  public function withSpecifierText(string $specifier_text)[]: this;
 }

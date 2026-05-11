@@ -28,4 +28,8 @@ HACK
   public function getSpecifierText()[]: string {
     return 'D';
   }
+
+  public function withSpecifierText(string $_)[]: this {
+    invariant_violation('stub');
+  }
 }

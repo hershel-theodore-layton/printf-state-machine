@@ -31,6 +31,11 @@ final class Factory {
     return $this->group->has($specifier_text);
   }
 
+  public function rename(string $from, string $to)[]: this {
+    return $this->group->rename($from, $to)
+      |> new static($$, $this->prefix, $this->typeAssertionGenerator);
+  }
+
   public function with(
     Handler $handler,
     ?TypeAssertionGenerator $type_assertion_generator = null,

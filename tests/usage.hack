@@ -134,6 +134,22 @@ async function usage_async(
 
       expect($code)->toNotContainSubstring('format_a');
     })
+    ->test('rename a handler that does not exist', () ==> {
+      expect_invoked(
+        () ==> $factory('Prefix')->withRewrite<int>('a')->rename('b', 'a'),
+      )->toHaveThrown<InvariantException>(
+        'Could not rename handler b, no such handler exists.',
+      );
+    })
+    ->test('rename a handler', () ==> {
+      $code = $factory('Prefix')
+        ->withRewrite<int>('a')
+        ->rename('a', 'b')
+        |> PrintfStateMachine\codegen($$, PrintfStateMachine\ENGINE_TEMPLATE);
+
+      expect($code)->toNotContainSubstring('format_a');
+      expect($code)->toContainSubstring('format_b');
+    })
     ->test('noop', ()[] ==> {
       list($format, $_) = format<Noop\Noop>(Noop\engine<>, '');
       expect($format)->toEqual('');

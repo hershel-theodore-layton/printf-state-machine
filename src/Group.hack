@@ -44,6 +44,22 @@ final class Group {
     return new static($handlers);
   }
 
+  public function rename(string $from, string $to)[]: this {
+    $handlers = $this->handlers;
+
+    $handler = $handlers[$from] ?? null;
+    invariant(
+      $handler is nonnull,
+      'Could not rename handler %s, no such handler exists.',
+      $from,
+    );
+
+    unset($handlers[$from]);
+    $handlers[$to] = $handler->withSpecifierText($to);
+
+    return new static($handlers);
+  }
+
   public function without(string $specifier_text)[]: this {
     invariant(
       $this->has($specifier_text),
