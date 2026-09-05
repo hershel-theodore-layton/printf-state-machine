@@ -49,7 +49,7 @@ function argument_list(string $string)[]: ArgumentList {
  *
  * ## ABI
  *
- * The words `mutable` means: may be reassigned and modified. Readonly means the
+ * The word `mutable` means: may be reassigned and modified. Readonly means the
  * inverse. This is not Hack's concept of `readonly` objects.
  *
  * The following variables are in scope:
@@ -58,7 +58,7 @@ function argument_list(string $string)[]: ArgumentList {
  *  - `$new_format mutable string`, the partially constructed format used for
  *    constructing the return value `Pack { $new_format, $new_args }`.
  *  - `$new_args mutable vec<mixed>`, the partially constructed arguments used
- *    for constructed the return value `Pack { $new_format, $new_args }`.
+ *    to construct the return value `Pack { $new_format, $new_args }`.
  *  - `$percent readonly int`, the index of the `%` sign in `$old_format` of the
  *    specifier you are processing right now.
  *  - `$arg_i mutable int`, the index into the `$old_args` vec that points at
@@ -68,8 +68,8 @@ function argument_list(string $string)[]: ArgumentList {
  *  - `$state private readonly int`, do not use.
  *  - `$char_i mutable int`, the index into the `$old_format` string pointing
  *    to the character currently being consumed.
- *  - `$arg mutable mixed`, the argument being processed, or `null` if the are
- *    no arguments are left.
+ *  - `$arg mutable mixed`, the argument being processed, or `null` if there are
+ *    no arguments left.
  *  - `$char mutable uint8`, the value `\ord($old_format[$char_i] ?? '')`.
  *
  * ## Behavior

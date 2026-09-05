@@ -3,7 +3,7 @@
 _Generate HH\\FormatString&lt;T&gt; state machines._
 
 This package uses a code generator to create state machines that process
-`HH\FormatString<T>` with their arguments and the accompanying typesafety
+`HH\FormatString<T>` with their arguments and the accompanying type-safety
 interfaces. This is a `--dev` dependency. You don't need this generator in
 production to use the state machines.
 
@@ -14,7 +14,7 @@ Start with `PrintfStateMachine\Factory::create()` and chain `->with...` methods.
 Once your DSL is ready, invoke
 `|> PrintfStateMachine\codegen($$, PrintfStateMachine\ENGINE_TEMPLATE)`. You will
 get `Entities`, which are "just code". Put this code somewhere in a namespace
-it won't conflict with any other engines. Then create a typesafe caller.
+it won't conflict with any other engines. Then create a type-safe caller.
 
 ```HACK
 function your_format_function(
@@ -43,7 +43,7 @@ out in your factory.
 
 You may very well want to add a strongly typed `%N` for `TableAndColumnName`
 to make sure that you never accidentally switch around a column name and a
-user supplied value. Short of patching the Hack typechecker, or building a
+user-supplied value. Short of patching the Hack typechecker, or building a
 very difficult to write linter that depends on type information, you'd need
 a tool like this. Write a definition for 12 (excluding `%C` and `%T`) specifiers
 and add `->withRewrite<TableAndColumnName>('N', 'C')`. The format and args were

@@ -229,7 +229,7 @@ async function usage_async(
       expect($format)->toEqual('A %custom B');
       expect($args)->toEqual(vec['transformed(123)']);
     })
-    ->test('many paths to excercise the typechecker', ()[] ==> {
+    ->test('many paths to exercise the typechecker', ()[] ==> {
       format<ManyPaths\ManyPaths>(
         ManyPaths\engine<>,
         '%abc %acb %bac %bca %cab %cba %?abc %?acb %?bac %?bca %?cab %?cba',
