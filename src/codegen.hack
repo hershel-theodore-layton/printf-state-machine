@@ -2,7 +2,6 @@
 namespace HTL\PrintfStateMachine;
 
 use namespace HH\Lib\{Str, Vec};
-use namespace HTL\PrintfStateMachine;
 
 function codegen(
   PrintfStateMachine\Factory $factory,
