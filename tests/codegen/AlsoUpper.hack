@@ -4,7 +4,7 @@ namespace HTL\PrintfStateMachine\Tests\AlsoUpper;
 use type HTL\Pragma\Pragmas;
 <<file:
   Pragmas(
-    vec['PhaLinters', 'digest:62dc2e54a85d6e029987'],
+    vec['PhaLinters', 'digest:4f475eb6a84bb1c4cfac'],
     vec['PhaLinters', 'fixme:camel_cased_methods_underscored_functions'],
     vec['PhaLinters', 'fixme:unused_variable'],
   )>>
@@ -85,4 +85,8 @@ function engine(
   }
 }
 
-function cast_generated_79ee78ec1a12904739e2904d(mixed $htl_untyped_variable)[]: string { return $htl_untyped_variable as string; }
+function cast_generated_79ee78ec1a12904739e2904d(
+  mixed $htl_untyped_variable,
+)[]: string {
+  return $htl_untyped_variable as string;
+}

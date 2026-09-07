@@ -4,7 +4,7 @@ namespace HTL\PrintfStateMachine\Tests\Custom;
 use type HTL\Pragma\Pragmas;
 <<file:
   Pragmas(
-    vec['PhaLinters', 'digest:5a04cb04b8a5215ad457'],
+    vec['PhaLinters', 'digest:6807688dd63f06aef74b'],
     vec['PhaLinters', 'fixme:camel_cased_methods_underscored_functions'],
     vec['PhaLinters', 'fixme:unused_variable'],
   )>>
@@ -56,7 +56,7 @@ function engine(
           switch ($char) {
             case 0x44: // 'D'
               invariant($old_format[$char_i + 1] === 'E', 'expected an E');
-              $new_args[] = 'transformed(' . $arg as int . ')';
+              $new_args[] = 'transformed('.$arg as int.')';
               ++$arg_i;
               ++$char_i;
               $new_format .= '%custom';

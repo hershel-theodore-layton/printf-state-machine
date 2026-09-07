@@ -5,7 +5,7 @@ use namespace HH\Lib\{File, Str};
 use namespace HTL\{PrintfStateMachine, TestChain};
 use type TypeAssertionException;
 use function HTL\Expect\{expect, expect_invoked};
-use function escapeshellarg, exec;
+use function HTL\PhaLintersServer\hackfmt_and_sign_hack_source_do_not_use_async;
 
 <<TestChain\Discover>>
 async function usage_async(
@@ -31,6 +31,7 @@ async function usage_async(
       "  )>>\n\n".
       PrintfStateMachine\codegen($factory, PrintfStateMachine\ENGINE_TEMPLATE).
       "\n";
+    $code = await hackfmt_and_sign_hack_source_do_not_use_async($code);
     $file = File\open_write_only(
       __DIR__.'/codegen/'.$path.'.hack',
       File\WriteMode::TRUNCATE,
@@ -41,19 +42,6 @@ async function usage_async(
     ) {
       await $file->writeAllAsync($code);
     }
-    $output = vec[];
-    $status = 0;
-    exec(
-      escapeshellarg(
-        __DIR__.
-        '/../vendor/hershel-theodore-layton/portable-hack-ast-linters-server/bin/pha-sign-hack-source.sh',
-      ).
-      ' '.
-      escapeshellarg(__DIR__.'/codegen/'.$path.'.hack'),
-      inout $output,
-      inout $status,
-    );
-    invariant($status === 0, 'Could not sign generated fixture');
   };
 
   await $write_async($factory('Noop', dict[]), 'Noop');

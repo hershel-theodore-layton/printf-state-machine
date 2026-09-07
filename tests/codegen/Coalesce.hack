@@ -4,7 +4,7 @@ namespace HTL\PrintfStateMachine\Tests\Coalesce;
 use type HTL\Pragma\Pragmas;
 <<file:
   Pragmas(
-    vec['PhaLinters', 'digest:8c8730fe0acb1984a41a'],
+    vec['PhaLinters', 'digest:a3157860d2ffe6cc1313'],
     vec['PhaLinters', 'fixme:camel_cased_methods_underscored_functions'],
     vec['PhaLinters', 'fixme:unused_variable'],
   )>>
@@ -82,7 +82,8 @@ function engine(
             case 0x73: // '?s'
               $arg = $arg |> cast_generated_dcd6916a0daf20dbd3dc4622($$);
               $new_format .= '%s';
-              $new_args[] = $arg |> $$ is null ? null : \HH\Lib\Str\uppercase($$);
+              $new_args[] =
+                $arg |> $$ is null ? null : \HH\Lib\Str\uppercase($$);
               ++$arg_i;
               $done = true;
               break;
@@ -99,4 +100,8 @@ function engine(
   }
 }
 
-function cast_generated_dcd6916a0daf20dbd3dc4622(mixed $htl_untyped_variable)[]: ?string { return $htl_untyped_variable as ?string; }
+function cast_generated_dcd6916a0daf20dbd3dc4622(
+  mixed $htl_untyped_variable,
+)[]: ?string {
+  return $htl_untyped_variable as ?string;
+}

@@ -4,7 +4,7 @@ namespace HTL\PrintfStateMachine\Tests\UpperMany;
 use type HTL\Pragma\Pragmas;
 <<file:
   Pragmas(
-    vec['PhaLinters', 'digest:1182204f007c20e99ae8'],
+    vec['PhaLinters', 'digest:387d187324ae35dda3be'],
     vec['PhaLinters', 'fixme:camel_cased_methods_underscored_functions'],
     vec['PhaLinters', 'fixme:unused_variable'],
   )>>
@@ -57,7 +57,8 @@ function engine(
             case 0x61: // 'a'
               $arg = $arg |> cast_generated_93ee28980c044af8f00a932f($$);
               $new_format .= '%s';
-              $new_args[] = $arg |> \HH\Lib\Vec\map($$, \HH\Lib\Str\uppercase<>);
+              $new_args[] =
+                $arg |> \HH\Lib\Vec\map($$, \HH\Lib\Str\uppercase<>);
               ++$arg_i;
               $done = true;
               break;
@@ -85,4 +86,12 @@ function engine(
   }
 }
 
-function cast_generated_93ee28980c044af8f00a932f(mixed $htl_untyped_variable)[]: vec<string> { $out__1 = vec[]; foreach (($htl_untyped_variable as vec<_>) as $v__1) { $out__1[] = $v__1 as string; } return $out__1; }
+function cast_generated_93ee28980c044af8f00a932f(
+  mixed $htl_untyped_variable,
+)[]: vec<string> {
+  $out__1 = vec[];
+  foreach (($htl_untyped_variable as vec<_>) as $v__1) {
+    $out__1[] = $v__1 as string;
+  }
+  return $out__1;
+}
