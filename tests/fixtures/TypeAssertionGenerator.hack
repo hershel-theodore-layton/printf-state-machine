@@ -3,6 +3,8 @@ namespace HTL\PrintfStateMachine\Tests;
 
 use namespace HH\Lib\Str;
 use namespace HTL\{PrintfStateMachine, StaticTypeAssertionCodegen, TypeVisitor};
+use type Exception;
+use function sha1;
 
 final class TypeAssertionGenerator
   implements PrintfStateMachine\TypeAssertionGenerator {
@@ -27,10 +29,10 @@ final class TypeAssertionGenerator
     $body = StaticTypeAssertionCodegen\from_type<T>(
       $this->typeAliasAsserters,
       $m ==> {
-        throw new \Exception($m);
+        throw new Exception($m);
       },
       ($x, $y) ==> {
-        throw new \Exception(($x ?? '').'::'.$y);
+        throw new Exception(($x ?? '').'::'.$y);
       },
     )
       |> StaticTypeAssertionCodegen\emit_body_for_assertion_function($$);
@@ -56,7 +58,8 @@ final class TypeAssertionGenerator
   }
 
   private static function typeNameToFunctionName(string $type_name)[]: string {
-    return \sha1($type_name) as string |> Str\slice($$, 16) |> 'cast_generated_'.$$;
+    return
+      sha1($type_name) as string |> Str\slice($$, 16) |> 'cast_generated_'.$$;
   }
 
   private static function newFunction(

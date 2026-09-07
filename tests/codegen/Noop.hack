@@ -4,6 +4,7 @@ namespace HTL\PrintfStateMachine\Tests\Noop;
 use type HTL\Pragma\Pragmas;
 <<file:
   Pragmas(
+    vec['PhaLinters', 'digest:04bbb07afa39891cd141'],
     vec['PhaLinters', 'fixme:camel_cased_methods_underscored_functions'],
     vec['PhaLinters', 'fixme:unused_variable'],
   )>>

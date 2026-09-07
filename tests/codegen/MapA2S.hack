@@ -4,6 +4,7 @@ namespace HTL\PrintfStateMachine\Tests\MapA2S;
 use type HTL\Pragma\Pragmas;
 <<file:
   Pragmas(
+    vec['PhaLinters', 'digest:b980385c3a31180e03fa'],
     vec['PhaLinters', 'fixme:camel_cased_methods_underscored_functions'],
     vec['PhaLinters', 'fixme:unused_variable'],
   )>>

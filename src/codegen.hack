@@ -3,10 +3,7 @@ namespace HTL\PrintfStateMachine;
 
 use namespace HH\Lib\{Str, Vec};
 
-function codegen(
-  PrintfStateMachine\Factory $factory,
-  string $template,
-)[]: PrintfStateMachine\Entities {
+function codegen(Factory $factory, string $template)[]: Entities {
   $template = $template |> Str\slice($$, Str\search($$, 'function') as nonnull);
 
   $codegen = $factory->toCodegen();
@@ -20,5 +17,5 @@ function codegen(
 
   return Vec\filter(vec[$interfaces, $impl, $casts])
     |> Str\join($$, "\n\n")
-    |> PrintfStateMachine\entities($$);
+    |> entities($$);
 }

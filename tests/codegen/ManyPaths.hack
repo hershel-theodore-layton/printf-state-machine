@@ -4,6 +4,7 @@ namespace HTL\PrintfStateMachine\Tests\ManyPaths;
 use type HTL\Pragma\Pragmas;
 <<file:
   Pragmas(
+    vec['PhaLinters', 'digest:faf8c9408efbdf0e3fce'],
     vec['PhaLinters', 'fixme:camel_cased_methods_underscored_functions'],
     vec['PhaLinters', 'fixme:unused_variable'],
   )>>

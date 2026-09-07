@@ -3,7 +3,9 @@ namespace HTL\PrintfStateMachine\Tests;
 
 use namespace HH\Lib\{File, Str};
 use namespace HTL\{PrintfStateMachine, TestChain};
+use type TypeAssertionException;
 use function HTL\Expect\{expect, expect_invoked};
+use function escapeshellarg, exec;
 
 <<TestChain\Discover>>
 async function usage_async(
@@ -23,6 +25,7 @@ async function usage_async(
       "use type HTL\Pragma\Pragmas;\n".
       "<<file:\n".
       "  Pragmas(\n".
+      "    vec['PhaLinters', 'digest:'],\n".
       "    vec['PhaLinters', 'fixme:camel_cased_methods_underscored_functions'],\n".
       "    vec['PhaLinters', 'fixme:unused_variable'],\n".
       "  )>>\n\n".
@@ -32,9 +35,25 @@ async function usage_async(
       __DIR__.'/codegen/'.$path.'.hack',
       File\WriteMode::TRUNCATE,
     );
-    using $file->closeWhenDisposed();
-    using $file->tryLockx(File\LockType::EXCLUSIVE);
-    await $file->writeAllAsync($code);
+    using (
+      $file->closeWhenDisposed(),
+      $file->tryLockx(File\LockType::EXCLUSIVE)
+    ) {
+      await $file->writeAllAsync($code);
+    }
+    $output = vec[];
+    $status = 0;
+    exec(
+      escapeshellarg(
+        __DIR__.
+        '/../vendor/hershel-theodore-layton/portable-hack-ast-linters-server/bin/pha-sign-hack-source.sh',
+      ).
+      ' '.
+      escapeshellarg(__DIR__.'/codegen/'.$path.'.hack'),
+      inout $output,
+      inout $status,
+    );
+    invariant($status === 0, 'Could not sign generated fixture');
   };
 
   await $write_async($factory('Noop', dict[]), 'Noop');
@@ -193,7 +212,7 @@ async function usage_async(
     })
     ->test('transformation set, runtime type checked', ()[] ==> {
       expect_invoked(() ==> Upper\engine('%a', vec[123]))
-        ->toHaveThrown<\TypeAssertionException>('Expected string, got int');
+        ->toHaveThrown<TypeAssertionException>('Expected string, got int');
     })
     ->test('transformation is invoked on arguments', ()[] ==> {
       list($_, $args) = format<Upper\Upper>(Upper\engine<>, '%a', 'text');

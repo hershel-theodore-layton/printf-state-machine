@@ -4,6 +4,7 @@ namespace HTL\PrintfStateMachine\Tests\UpperMany;
 use type HTL\Pragma\Pragmas;
 <<file:
   Pragmas(
+    vec['PhaLinters', 'digest:1182204f007c20e99ae8'],
     vec['PhaLinters', 'fixme:camel_cased_methods_underscored_functions'],
     vec['PhaLinters', 'fixme:unused_variable'],
   )>>
