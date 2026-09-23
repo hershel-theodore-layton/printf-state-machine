@@ -55,9 +55,8 @@ final class Group {
     );
 
     unset($handlers[$from]);
-    $handlers[$to] = $handler->withSpecifierText($to);
 
-    return new static($handlers);
+    return (new static($handlers))->with($handler->withSpecifierText($to));
   }
 
   public function without(string $specifier_text)[]: this {

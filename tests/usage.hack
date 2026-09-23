@@ -157,6 +157,45 @@ async function usage_async(
       expect($code)->toNotContainSubstring('format_a');
       expect($code)->toContainSubstring('format_b');
     })
+    ->test('rename rejects a longer conflicting specifier', () ==> {
+      $original =
+        $factory('Prefix')->withRewrite<int>('a')->withRewrite<int>('b');
+      expect_invoked(() ==> $original->rename('b', 'ab'))
+        ->toHaveThrown<InvariantException>(
+          "Could not add '%ab' because it is ambiguous with '%a'",
+        );
+      expect($original->has('a'))->toBeTrue();
+      expect($original->has('b'))->toBeTrue();
+      expect($original->has('ab'))->toBeFalse();
+    })
+    ->test('rename rejects a shorter conflicting specifier', () ==> {
+      $original =
+        $factory('Prefix')->withRewrite<int>('ab')->withRewrite<int>('c');
+      expect_invoked(() ==> $original->rename('c', 'a'))
+        ->toHaveThrown<InvariantException>(
+          "Could not add '%a' because it is ambiguous with '%ab'",
+        );
+    })
+    ->test('rename does not collide with its old specifier', () ==> {
+      $original = $factory('Prefix')->withRewrite<int>('a');
+      $longer = $original->rename('a', 'ab');
+      expect($longer->has('a'))->toBeFalse();
+      expect($longer->has('ab'))->toBeTrue();
+      $shorter = $longer->rename('ab', 'a');
+      expect($shorter->has('a'))->toBeTrue();
+      expect($shorter->has('ab'))->toBeFalse();
+      expect($shorter->rename('a', 'a')->has('a'))->toBeTrue();
+    })
+    ->test('rename can replace an existing handler', () ==> {
+      $generated = $factory('Prefix')
+        ->withRewrite<int>('a', 'd', increment<>)
+        ->withRewrite<int>('b', 'd', decrement<>)
+        ->rename('a', 'b')
+        |> PrintfStateMachine\codegen($$, PrintfStateMachine\ENGINE_TEMPLATE);
+      expect($generated)->toContainSubstring('increment');
+      expect($generated)->toNotContainSubstring('decrement');
+      expect($generated)->toNotContainSubstring('format_a');
+    })
     ->test('noop', ()[] ==> {
       list($format, $_) = format<Noop\Noop>(Noop\engine<>, '');
       expect($format)->toEqual('');
