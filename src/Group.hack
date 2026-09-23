@@ -22,6 +22,13 @@ final class Group {
     $handlers = $this->handlers;
     $new_prefix = $handler->getSpecifierText();
 
+    invariant(
+      !Str\starts_with($new_prefix, '%'),
+      "Pass %s without the leading `%%`. %s will add its own `%%`.",
+      $new_prefix,
+      __FUNCTION__,
+    );
+
     if (C\contains_key($handlers, $handler->getSpecifierText())) {
       $handlers[$handler->getSpecifierText()] = $handler;
       return new static($handlers);

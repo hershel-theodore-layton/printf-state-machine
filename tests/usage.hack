@@ -92,6 +92,26 @@ async function usage_async(
   );
 
   return $chain->group(__FUNCTION__)
+    ->test('specifier names cannot begin with a percent sign', () ==> {
+      foreach (vec['%', '%x', '%%x'] as $specifier) {
+        expect_invoked(() ==> $factory('Prefix')->withRewrite<int>($specifier))
+          ->toHaveThrown<InvariantException>(
+            'Pass '.$specifier.' without the leading `%`.',
+          );
+      }
+    })
+    ->test('rename cannot introduce a leading percent sign', () ==> {
+      $original = $factory('Prefix')->withRewrite<int>('x');
+      expect_invoked(() ==> $original->rename('x', '%x'))
+        ->toHaveThrown<InvariantException>(
+          'Pass %x without the leading `%`.',
+        );
+      expect($original->has('x'))->toBeTrue();
+      expect($original->has('%x'))->toBeFalse();
+    })
+    ->test('a percent sign after the first character is allowed', () ==> {
+      expect($factory('Prefix')->withRewrite<int>('x%')->has('x%'))->toBeTrue();
+    })
     ->test('ambiguous specifiers', ()[] ==> {
       expect_invoked(
         () ==> $factory('ABA')->withRewrite<int>('ab')->withRewrite<int>('aba'),
