@@ -24,7 +24,7 @@ final class Group {
 
     invariant(
       !Str\starts_with($new_prefix, '%'),
-      "Pass %s without the leading `%%`. %s will add its own `%%`.",
+      'Pass %s without the leading `%%`. %s will add its own `%%`.',
       $new_prefix,
       __FUNCTION__,
     );
