@@ -27,7 +27,7 @@ async function generate_template_constant_async()[defaults]: Awaitable<void> {
     |> Str\trim_right($$)
     |> var_export_pure($$) as string
     |> Str\format(
-      "/** This project is unlicensed. No license has been granted. */\n".
+      "/** printf-state-machine is MIT licensed, see /LICENSE. */\n".
       "namespace HTL\PrintfStateMachine;\n\n".
       "const string ENGINE_TEMPLATE = %s;\n",
       $$,
