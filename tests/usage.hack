@@ -81,7 +81,8 @@ async function usage_async(
       'f' => PrintfStateMachine\value_transform(
         "\\HH\\Lib\\Str\\uppercase('function')",
       ),
-      'p' => PrintfStateMachine\value_transform('\\HH\\Lib\\Str\\uppercase($$)'),
+      'p' =>
+        PrintfStateMachine\value_transform('\\HH\\Lib\\Str\\uppercase($$)'),
       'n' => null,
     ] as $specifier => $transform
   ) {
@@ -125,9 +126,7 @@ async function usage_async(
     ->test('rename cannot introduce a leading percent sign', () ==> {
       $original = $factory('Prefix')->withRewrite<int>('x');
       expect_invoked(() ==> $original->rename('x', '%x'))
-        ->toHaveThrown<InvariantException>(
-          'Pass %x without the leading `%`.',
-        );
+        ->toHaveThrown<InvariantException>('Pass %x without the leading `%`.');
       expect($original->has('x'))->toBeTrue();
       expect($original->has('%x'))->toBeFalse();
     })
