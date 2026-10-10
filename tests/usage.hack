@@ -115,14 +115,18 @@ async function usage_async(
   );
 
   return $chain->group(__FUNCTION__)
-    ->test('specifier names cannot begin with a percent sign', () ==> {
-      foreach (vec['%', '%x', '%%x'] as $specifier) {
+    ->testWith2Params(
+      'specifier names cannot begin with a percent sign',
+      () ==> dict[
+        '%' => tuple('%', 'Pass % without the leading `%`.'),
+        '%x' => tuple('%x', 'Pass %x without the leading `%`.'),
+        '%%x' => tuple('%%x', 'Pass %%x without the leading `%`.'),
+      ],
+      (string $specifier, string $message) ==> {
         expect_invoked(() ==> $factory('Prefix')->withRewrite<int>($specifier))
-          ->toHaveThrown<InvariantException>(
-            'Pass '.$specifier.' without the leading `%`.',
-          );
-      }
-    })
+          ->toHaveThrown<InvariantException>($message);
+      },
+    )
     ->test('rename cannot introduce a leading percent sign', () ==> {
       $original = $factory('Prefix')->withRewrite<int>('x');
       expect_invoked(() ==> $original->rename('x', '%x'))
