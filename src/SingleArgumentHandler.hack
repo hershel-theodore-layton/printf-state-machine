@@ -28,8 +28,8 @@ final class SingleArgumentHandler implements Handler {
       ),
       Str\format(
         '$new_args[] = %s%s;',
-        Str\contains($this->valueTransform ?? '', '$$') ? '$arg |> ' : '$arg',
-        $this->valueTransform ?? '',
+        Str\contains($this->valueTransform ?? '', '$$') ? '$arg |> ' : '',
+        $this->valueTransform ?? '$arg',
       ),
       '++$arg_i;',
       '$done = true;',

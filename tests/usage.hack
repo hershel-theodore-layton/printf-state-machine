@@ -74,6 +74,28 @@ async function usage_async(
     'AlsoUpper',
   );
   await $write_async($factory('Custom')->with(new CustomHandler()), 'Custom');
+  $value_transforms = $factory('ValueTransforms');
+  foreach (
+    dict[
+      'c' => PrintfStateMachine\value_transform("'constant'"),
+      'f' => PrintfStateMachine\value_transform(
+        "\\HH\\Lib\\Str\\uppercase('function')",
+      ),
+      'p' => PrintfStateMachine\value_transform('\\HH\\Lib\\Str\\uppercase($$)'),
+      'n' => null,
+    ] as $specifier => $transform
+  ) {
+    $value_transforms = $value_transforms->with(
+      new PrintfStateMachine\SingleArgumentHandler(
+        $specifier,
+        PrintfStateMachine\sequence_transform("'%s'"),
+        PrintfStateMachine\hack_type('string'),
+        PrintfStateMachine\type_assertion_expression('$$ as string'),
+        $transform,
+      ),
+    );
+  }
+  await $write_async($value_transforms, 'ValueTransforms');
   await $write_async(
     $factory('ManyPaths')
       ->withRewrite<int>('abc')
@@ -294,6 +316,18 @@ async function usage_async(
         format<Custom\Custom>(Custom\engine<>, 'A %DE B', 123);
       expect($format)->toEqual('A %custom B');
       expect($args)->toEqual(vec['transformed(123)']);
+    })
+    ->test('direct value transforms accept independent expressions', ()[] ==> {
+      list($format, $args) = format<ValueTransforms\ValueTransforms>(
+        ValueTransforms\engine<>,
+        '%c %f %p %n',
+        'ignored constant input',
+        'ignored function input',
+        'pipe',
+        'unchanged',
+      );
+      expect($format)->toEqual('%s %s %s %s');
+      expect($args)->toEqual(vec['constant', 'FUNCTION', 'PIPE', 'unchanged']);
     })
     ->test('many paths to exercise the typechecker', ()[] ==> {
       format<ManyPaths\ManyPaths>(
