@@ -1,11 +1,10 @@
 /** printf-state-machine is MIT licensed, see /LICENSE. */
 namespace HTL\PrintfStateMachine\Tests;
 
-use namespace HH\Lib\{File, Str};
-use namespace HTL\{PrintfStateMachine, TestChain};
+use namespace HH\Lib\Str;
+use namespace HTL\{HackCompiler, PrintfStateMachine, TestChain};
 use type TypeAssertionException;
 use function HTL\Expect\{expect, expect_invoked};
-use function HTL\PhaLintersServer\hackfmt_and_sign_hack_source_do_not_use_async;
 
 <<TestChain\Discover>>
 async function usage_async(
@@ -31,17 +30,10 @@ async function usage_async(
       "  )>>\n\n".
       PrintfStateMachine\codegen($factory, PrintfStateMachine\ENGINE_TEMPLATE).
       "\n";
-    $code = await hackfmt_and_sign_hack_source_do_not_use_async($code);
-    $file = File\open_write_only(
+    await HackCompiler\write_source_async(
+      $code,
       __DIR__.'/codegen/'.$path.'.hack',
-      File\WriteMode::TRUNCATE,
     );
-    using (
-      $file->closeWhenDisposed(),
-      $file->tryLockx(File\LockType::EXCLUSIVE)
-    ) {
-      await $file->writeAllAsync($code);
-    }
   };
 
   await $write_async($factory('Noop', dict[]), 'Noop');
