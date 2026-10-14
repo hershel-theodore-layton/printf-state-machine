@@ -22,10 +22,7 @@ final class Group {
     $handlers = $this->handlers;
     $new_prefix = $handler->getSpecifierText();
 
-    invariant(
-      $new_prefix !== '',
-      'Specifier text must not be empty.',
-    );
+    invariant($new_prefix !== '', 'Specifier text must not be empty.');
 
     invariant(
       !Str\starts_with($new_prefix, '%'),

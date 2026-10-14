@@ -70,7 +70,7 @@ function argument_list(string $string)[]: ArgumentList {
  *    to the character currently being consumed.
  *  - `$arg mutable mixed`, the argument being processed, or `null` if there are
  *    no arguments left.
- *  - `$char mutable uint8`, the value `\ord($old_format[$char_i] ?? '')`.
+ *  - `$char mutable uint8`, the value `\ord($old_format[$char_i])`.
  *
  * ## Behavior
  * 
