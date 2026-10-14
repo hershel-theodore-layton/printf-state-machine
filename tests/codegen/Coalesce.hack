@@ -4,7 +4,7 @@ namespace HTL\PrintfStateMachine\Tests\Coalesce;
 use type HTL\Pragma\Pragmas;
 <<file:
   Pragmas(
-    vec['PhaLinters', 'digest:a3157860d2ffe6cc1313'],
+    vec['PhaLinters', 'digest:30e1bca2a0e6feea6632'],
     vec['PhaLinters', 'fixme:camel_cased_methods_underscored_functions'],
     vec['PhaLinters', 'fixme:unused_variable'],
   )>>
@@ -24,6 +24,7 @@ function engine(
 )[]: (string, vec<mixed>) {
   $new_format = '';
   $new_args = vec[];
+  $format_length = \HH\Lib\Str\length($old_format);
 
   for ($percent = 0, $arg_i = 0, $unseen_part = 0; ; ) {
     $percent = \HH\Lib\Str\search($old_format, '%', $unseen_part);
@@ -44,7 +45,7 @@ function engine(
       return tuple($new_format, $new_args);
     }
 
-    if ($old_format[$percent + 1] === '%') {
+    if (($old_format[$percent + 1] ?? null) === '%') {
       $new_format .= '%%';
       $unseen_part = $percent + 2;
       continue;
@@ -53,8 +54,13 @@ function engine(
     $done = false;
     $state = 0;
     for ($char_i = $percent + 1; !$done; ++$char_i) {
+      invariant(
+        $char_i < $format_length,
+        'Incomplete specifier starting at %d',
+        $percent,
+      );
       $arg = $old_args[$arg_i] ?? null;
-      $char = \ord($old_format[$char_i] ?? '');
+      $char = \ord($old_format[$char_i]);
       switch ($state) {
         case 0:
           switch ($char) {

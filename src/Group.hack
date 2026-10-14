@@ -23,6 +23,11 @@ final class Group {
     $new_prefix = $handler->getSpecifierText();
 
     invariant(
+      $new_prefix !== '',
+      'Specifier text must not be empty.',
+    );
+
+    invariant(
       !Str\starts_with($new_prefix, '%'),
       'Pass %s without the leading `%%`. %s will add its own `%%`.',
       $new_prefix,

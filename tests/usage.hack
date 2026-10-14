@@ -126,6 +126,17 @@ async function usage_async(
       expect($original->has('x'))->toBeTrue();
       expect($original->has('%x'))->toBeFalse();
     })
+    ->test('empty specifier is rejected at registration', () ==> {
+      expect_invoked(() ==> $factory('Empty')->withRewrite<int>(''))
+        ->toHaveThrown<InvariantException>('Specifier text must not be empty.');
+    })
+    ->test('empty rename is rejected without changing the original', () ==> {
+      $original = $factory('Empty')->withRewrite<int>('x');
+      expect_invoked(() ==> $original->rename('x', ''))
+        ->toHaveThrown<InvariantException>('Specifier text must not be empty.');
+      expect($original->has('x'))->toBeTrue();
+      expect($original->has(''))->toBeFalse();
+    })
     ->test('a percent sign after the first character is allowed', () ==> {
       expect($factory('Prefix')->withRewrite<int>('x%')->has('x%'))->toBeTrue();
     })
@@ -240,6 +251,29 @@ async function usage_async(
     ->test('double percent is ignored', ()[] ==> {
       list($format, $_) = format<Noop\Noop>(Noop\engine<>, 'A %% B');
       expect($format)->toEqual('A %% B');
+    })
+    ->testWith2Params(
+      'truncated specifiers identify their starting position',
+      () ==> dict[
+        'bare percent' => tuple('%', 0),
+        'after text' => tuple('text %', 5),
+        'one character prefix' => tuple('%a', 0),
+        'two character prefix' => tuple('text %ab', 5),
+        'after escaped percent' => tuple('%%%', 2),
+      ],
+      (string $format, int $start) ==> {
+        expect_invoked(() ==> ManyPaths\engine($format, vec[]))
+          ->toHaveThrown<InvariantException>(
+            Str\format('Incomplete specifier starting at %d', $start),
+          );
+      },
+    )
+    ->test('NUL remains an unexpected byte', () ==> {
+      expect_invoked(() ==> ManyPaths\engine("%ab\0", vec[]))
+        ->toHaveThrown<InvariantException>('Unexpected 0x0 at 3');
+    })
+    ->test('escaped percent at end is valid', () ==> {
+      expect(Noop\engine('%%', vec[]))->toEqual(tuple('%%', vec[]));
     })
     ->test('unknown specifier', ()[] ==> {
       expect_invoked(() ==> Noop\engine('%x', vec[]))
