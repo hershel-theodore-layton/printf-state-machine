@@ -244,6 +244,39 @@ async function usage_async(
       expect($generated)->toNotContainSubstring('decrement');
       expect($generated)->toNotContainSubstring('format_a');
     })
+    ->test('template indentation does not change the engine', () ==> {
+      $factory = $factory('Template')->withRewrite<int>('d');
+      $standard = PrintfStateMachine\codegen($factory, PrintfStateMachine\ENGINE_TEMPLATE);
+      $indented = Str\replace(
+        PrintfStateMachine\ENGINE_TEMPLATE,
+        '      // @@magic(switch)',
+        "\t// @@magic(switch)  ",
+      );
+      expect(PrintfStateMachine\codegen($factory, $indented))->toEqual($standard);
+    })
+    ->test('template preambles fail before generating code', () ==> {
+      expect_invoked(
+        () ==> PrintfStateMachine\codegen(
+          $factory('Template'),
+          "// Custom function template\n".PrintfStateMachine\ENGINE_TEMPLATE,
+        ),
+      )->toHaveThrown<InvariantException>(
+        'Engine template must begin with function engine(, without a file preamble.',
+      );
+    })
+    ->test('missing and repeated dispatch markers fail during generation', () ==> {
+      foreach (vec['// omitted marker', "// @@magic(switch)\n// @@magic(switch)"] as $replacement) {
+        $template = Str\replace(
+          PrintfStateMachine\ENGINE_TEMPLATE,
+          '// @@magic(switch)',
+          $replacement,
+        );
+        expect_invoked(() ==> PrintfStateMachine\codegen($factory('Template'), $template))
+          ->toHaveThrown<InvariantException>(
+            'Engine template must contain exactly one standalone // @@magic(switch) line.',
+          );
+      }
+    })
     ->test('noop', ()[] ==> {
       list($format, $_) = format<Noop\Noop>(Noop\engine<>, '');
       expect($format)->toEqual('');
