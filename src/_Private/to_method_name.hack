@@ -3,11 +3,11 @@ namespace HTL\PrintfStateMachine\_Private;
 
 use namespace HH\Lib\Str;
 use namespace HTL\PrintfStateMachine;
-use function dechex, ord;
+use function ord;
 
 function to_method_name(string $char)[]: PrintfStateMachine\MethodName {
   $ord = ord($char);
-  $display = Str\pad_left(dechex($ord), 2, '0');
+  $display = Str\format('%02x', $ord);
   invariant(
     $ord <= 0x7f,
     'Characters that are not part of 7-bit ascii as not supported, got 0x%s.',

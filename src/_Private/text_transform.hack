@@ -2,11 +2,11 @@
 namespace HTL\PrintfStateMachine\_Private;
 
 use namespace HH\Lib\Str;
-use function dechex, ord;
+use function ord;
 
 function text_transform(string $char)[]: string {
   $ord = ord($char);
-  $display = Str\pad_left(dechex($ord), 2, '0');
+  $display = Str\format('%02x', $ord);
   return FRIENDLY_NAMES[$ord] ?? ('Char'.$display);
 }
 
